@@ -1,0 +1,22 @@
+"nav": {
+  "home": "Главная",
+  "events": "Мероприятия",
+  "profile": "Профиль",
+  "settings": "Настройки",
+  "chat": "Сообщения",
+  "dashboard": "Аналитика",
+  "adminPanel": "Админ-панель",
+  "moderation": "Модерация",
+  "organize": "Организовать",
+  "league": "Лига",
+  "smartMatch": "Умный Подбор",
+  "smallOrgs": "Малые Организации",
+  "friends": "Друзья",
+  "organizations": "Организации",
+  "notifications": "Уведомления",
+  "messages": "Сообщения",
+  "demoLogin": "Демо Вход",
+  "createEvent": "Создать Мероприятие",
+  "organizerDashboard": "Панель Организатора",
+  "adminUsers": "Управление Пользователями"
+} 

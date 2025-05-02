@@ -1,0 +1,290 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Theme based on Volio Brand */
+    --background: 220 20% 97%; /* #F5F7F7 - Slightly adjusted for neutrality */
+    --foreground: 210 10% 15%; /* #21262D - Darker gray for better contrast */
+    --card: 220 20% 97%; /* Match background */
+    --card-foreground: 210 10% 15%; /* Match foreground */
+    --popover: 220 20% 97%;
+    --popover-foreground: 210 10% 15%;
+    --primary: 157 100% 30%; /* #009975 Emerald */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 4 85% 60%; /* #FF6F61 Coral */
+    --secondary-foreground: 0 0% 100%; /* White (for contrast on Coral) */
+    --muted: 210 10% 90%; /* Lighter neutral */
+    --muted-foreground: 210 7% 45%; /* #6A707C - Slightly darker muted text */
+    --accent: 45 100% 60%; /* #FFD233 Lime/Yellow */
+    --accent-foreground: 210 10% 10%; /* Dark text for yellow */
+    --destructive: 4 85% 60%; /* #FF6F61 - Using Coral as destructive */
+    --destructive-foreground: 0 0% 100%; /* White */
+    --border: 210 10% 85%; /* Light gray border */
+    --input: 210 10% 85%;
+    --ring: 157 100% 30%; /* Emerald for focus rings */
+
+    --chart-1: 4 85% 60%; /* Coral Red */
+    --chart-2: 45 100% 60%; /* Accent Yellow */
+    --chart-3: 270 80% 60%; /* Purple */
+    --chart-4: 157 100% 25%; /* Darker Emerald */
+    --chart-5: 210 10% 90%; /* Light Neutral */
+    --radius: 0.5rem;
+
+    /* Sidebar colors (Light Theme) */
+    --sidebar-background: 0 0% 100%; /* White */
+    --sidebar-foreground: 210 10% 15%; /* Darker gray */
+    --sidebar-primary: 157 100% 30%; /* Emerald */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 210 10% 95%; /* Very Light Gray */
+    --sidebar-accent-foreground: 157 100% 30%; /* Emerald */
+    --sidebar-border: 210 10% 91%; /* Light Border */
+    --sidebar-ring: 157 100% 30%; /* Emerald */
+  }
+
+  .dark {
+    /* Dark Theme based on Volio Brand */
+    --background: 210 7% 7%; /* #111315 Rich Black */
+    --foreground: 210 17% 95%; /* #EDEFF2 Near White */
+    --card: 210 8% 9%; /* #181A1D Dark Surface */
+    --card-foreground: 210 17% 95%; /* Near White */
+    --popover: 210 8% 9%; /* Dark Surface */
+    --popover-foreground: 210 17% 95%; /* Near White */
+    --primary: 157 100% 55%; /* #00B37E Emerald */
+    --primary-foreground: 0 0% 5%; /* Very Dark for contrast on green */
+    --secondary: 4 85% 60%; /* #FF6F61 Coral */
+    --secondary-foreground: 0 0% 100%; /* White */
+    --muted: 210 7% 15%; /* Darker Gray */
+    --muted-foreground: 210 10% 60%; /* #8C96A8 Muted Text */
+    --accent: 45 100% 60%; /* #FFD233 Lime/Yellow */
+    --accent-foreground: 210 7% 7%; /* Rich Black text */
+    --destructive: 4 85% 60%; /* #FF6F61 Coral */
+    --destructive-foreground: 0 0% 100%; /* White */
+    --border: 210 7% 20%; /* Dark Border */
+    --input: 210 7% 20%;
+    --ring: 157 100% 55%; /* Emerald */
+    --chart-1: 4 85% 70%; /* Brighter Red */
+    --chart-2: 45 100% 65%; /* Brighter Yellow */
+    --chart-3: 280 85% 70%; /* Brighter Purple */
+    --chart-4: 157 100% 65%; /* Brighter Green */
+    --chart-5: 210 7% 30%; /* Mid Dark Gray */
+
+    /* Sidebar colors (Dark Theme) */
+    --sidebar-background: 210 8% 9%; /* Dark Surface */
+    --sidebar-foreground: 210 17% 95%; /* Near White */
+    --sidebar-primary: 157 100% 55%; /* Emerald */
+    --sidebar-primary-foreground: 0 0% 5%; /* Very Dark */
+    --sidebar-accent: 210 7% 15%; /* Darker Gray */
+    --sidebar-accent-foreground: 157 100% 55%; /* Emerald */
+    --sidebar-border: 210 7% 20%; /* Dark Border */
+    --sidebar-ring: 157 100% 55%; /* Emerald */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Apply Inter font */
+    font-family: 'Inter var', var(--font-geist-sans), sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+     /* Apply Clash Display to headings */
+     font-family: 'Clash Display', var(--font-geist-sans), sans-serif;
+  }
+  /* Skip link styles */
+  .skip-link {
+      @apply sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:rounded-md;
+  }
+
+  /* Light theme contrast adjustments */
+   .light .text-primary { @apply text-[hsl(var(--primary))]; }
+   .light .bg-primary { @apply text-primary-foreground; }
+   .light .bg-destructive { @apply text-destructive-foreground; }
+   .light .bg-accent { @apply text-accent-foreground; }
+   .light .text-destructive { @apply text-[hsl(var(--destructive))]; }
+   /* Ensure button text is white on coral */
+   .light .hover\:bg-destructive:hover {
+       @apply text-destructive-foreground;
+   }
+   .light .hover\:bg-secondary:hover {
+       @apply text-secondary-foreground;
+   }
+
+
+  /* Dark theme contrast adjustments */
+   .dark .text-primary { @apply text-[hsl(var(--primary))]; }
+   .dark .bg-primary { @apply text-primary-foreground; }
+   .dark .bg-destructive { @apply text-destructive-foreground; }
+   .dark .bg-accent { @apply text-accent-foreground; }
+   .dark .text-destructive { @apply text-[hsl(var(--destructive))]; }
+    .dark .hover\:bg-secondary:hover {
+       @apply text-secondary-foreground;
+   }
+
+}
+
+@layer components {
+  /* Neumorphism adjusted for better contrast and subtle light theme border */
+  .neumorphism {
+     @apply rounded-lg shadow-[3px_3px_8px_hsl(var(--foreground)/0.04),_-3px_-3px_8px_hsl(var(--background)/0.9)] dark:shadow-[5px_5px_10px_hsl(0_0%_0%/0.3),_-5px_-5px_10px_hsl(var(--foreground)/0.05)];
+     /* Use subtle border in light theme */
+     @apply border border-[hsl(var(--border)/0.3)] dark:border-transparent;
+     @apply bg-card; /* Ensure background color is applied */
+  }
+  .neumorphism-inset {
+     @apply rounded-lg shadow-[inset_2px_2px_5px_hsl(var(--foreground)/0.06),_inset_-2px_-2px_5px_hsl(var(--background)/0.9)] dark:shadow-[inset_4px_4px_8px_hsl(0_0%_0%/0.3),_inset_-4px_-4px_8px_hsl(var(--foreground)/0.05)];
+     /* Use subtle inset border in light theme */
+     @apply border border-[hsl(var(--border)/0.2)] dark:border-transparent;
+     @apply bg-card;
+  }
+
+  /* Add float animation */
+   @keyframes float {
+     0%, 100% { transform: translateY(0px); }
+     50% { transform: translateY(-8px); }
+   }
+  .animate-float {
+     animation: float 6s ease-in-out infinite;
+  }
+
+   /* Radial burst animation */
+    @keyframes radial-burst {
+      from { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+      to { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+    }
+    .animate-radial-burst {
+       position: relative;
+       overflow: hidden;
+    }
+   .animate-radial-burst::after {
+       content: '';
+       position: absolute;
+       top: 50%; left: 50%;
+       width: 200%; /* Large enough to cover button */
+       padding-bottom: 200%;
+       border-radius: 50%;
+       /* Use primary/accent gradient for burst */
+       background: radial-gradient(circle, hsla(var(--primary) / 0.5) 0%, hsla(var(--accent) / 0) 70%);
+       transform: translate(-50%, -50%) scale(0);
+       opacity: 0;
+       pointer-events: none;
+   }
+   .animate-radial-burst:active::after {
+       animation: radial-burst 0.4s ease-out forwards;
+   }
+
+   /* SVG Wave fill animation (if using SVG) */
+    @keyframes fill-wave {
+      from { stroke-dashoffset: 1000; /* Adjust based on path length */ }
+      to { stroke-dashoffset: 0; }
+    }
+    .svg-wave-path {
+      stroke-dasharray: 1000; /* Adjust based on path length */
+      animation: fill-wave 2s ease-out forwards;
+    }
+
+    /* Active nav link style */
+    .nav-link-active {
+        @apply relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-gradient-to-r after:from-primary after:to-destructive; /* Use Destructive color from review */
+    }
+
+  /* Sidebar styles */
+  [data-sidebar="sidebar"] {
+    --sidebar-width: 16rem;
+    --sidebar-width-collapsed: 3rem;
+    background-color: hsl(var(--sidebar-background));
+    color: hsl(var(--sidebar-foreground));
+    border-right: 1px solid hsl(var(--sidebar-border));
+  }
+
+  [data-sidebar="menu-button"][data-active="true"] {
+    color: hsl(var(--sidebar-primary));
+    background-color: hsl(var(--sidebar-accent));
+  }
+
+  [data-sidebar="menu-item"] {
+    position: relative;
+  }
+  
+  /* Active item indicator */
+  [data-sidebar="menu-item"] a[data-active="true"]::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    border-radius: 0 2px 2px 0;
+    background: linear-gradient(to bottom, hsl(var(--primary)), hsl(var(--destructive)));
+  }
+
+  /* Notification badge styles */
+  [data-sidebar="menu-item"] .notification-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 10px;
+    color: hsl(var(--primary-foreground));
+    background-color: hsl(var(--primary));
+    margin-left: auto;
+  }
+  
+  /* Volio custom sidebar animations */
+  @keyframes sidebar-slide-in {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+  
+  @keyframes sidebar-slide-out {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+  
+  .sidebar-slide-in {
+    animation: sidebar-slide-in 0.2s ease-out forwards;
+  }
+  
+  .sidebar-slide-out {
+    animation: sidebar-slide-out 0.2s ease-out forwards;
+  }
+  
+  /* Volio custom color variables */
+  :root {
+    --volio-background: #F4F1DE;
+    --volio-text: #264653;
+    --volio-secondary: #2A9D8F;
+    --volio-primary: #E76F51;
+    --volio-notification: #FFD166;
+    --volio-hover: #A8DADC;
+  }
+}
+
+/* Ensure destructive variant button text is readable on hover */
+.light .group.destructive .group-\[\.destructive\]\:hover\:bg-destructive:hover,
+   .light .group.destructive .group-\[\.destructive\]\:hover\:bg-destructive:hover button {
+  color: hsl(var(--destructive-foreground));
+}
+.dark .group.destructive .group-\[\.destructive\]\:hover\:bg-destructive:hover,
+   .dark .group.destructive .group-\[\.destructive\]\:hover\:bg-destructive:hover button {
+  color: hsl(var(--destructive-foreground));
+}
+
+/* Ensure secondary variant button text is readable on hover */
+.light .hover\:bg-secondary:hover,
+   .light .hover\:bg-secondary:hover button {
+  color: hsl(var(--secondary-foreground));
+}
+.dark .hover\:bg-secondary:hover,
+    .dark .hover\:bg-secondary:hover button {
+   color: hsl(var(--secondary-foreground));
+}

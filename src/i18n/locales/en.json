@@ -1,0 +1,22 @@
+"nav": {
+  "home": "Home",
+  "events": "Events",
+  "profile": "Profile",
+  "settings": "Settings",
+  "chat": "Messages",
+  "dashboard": "Analytics",
+  "adminPanel": "Admin",
+  "moderation": "Moderation",
+  "organize": "Organize",
+  "league": "League",
+  "smartMatch": "Smart Match",
+  "smallOrgs": "Small Organizations",
+  "friends": "Friends",
+  "organizations": "Organizations",
+  "notifications": "Notifications",
+  "messages": "Messages",
+  "demoLogin": "Demo Login",
+  "createEvent": "Create Event",
+  "organizerDashboard": "Organizer Dashboard",
+  "adminUsers": "User Management"
+} 

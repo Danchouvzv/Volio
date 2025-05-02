@@ -1,0 +1,30 @@
+/*
+  This file is primarily for documentation or potential future use
+  if separating tokens from Tailwind becomes necessary.
+
+  The actual CSS custom properties are defined within the
+  `:root` and `.dark` selectors in `src/app/globals.css`
+  to leverage Tailwind's theme system.
+*/
+
+/*
+:root {
+  --c-primary: #00B37E; /* Volio Green */
+  --c-secondary: #FF6154; /* Alert/Secondary Red */
+  --c-accent: #FFD233; /* Accent Yellow */
+  --c-bg: #F5F5F7; /* Near White */
+  --c-text-main: #2B2D31; /* Dark Gray/Graphite */
+  --c-text-muted: #59606D; /* Neutral Text Muted */
+  --c-border: #DCDFE4; /* Light gray border */
+}
+
+.dark {
+  --c-primary: #00B37E; /* Volio Green */
+  --c-secondary: #FF6154; /* Alert/Secondary Red */
+  --c-accent: #FFD233; /* Accent Yellow */
+  --c-bg: #111315; /* Rich Black */
+  --c-text-main: #EDEFF2; /* Near White */
+  --c-text-muted: #8C96A8; /* Muted Text */
+  --c-border: #3A3F47; /* Dark Border */
+}
+*/
