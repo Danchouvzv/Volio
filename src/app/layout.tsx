@@ -10,6 +10,7 @@ import { I18nProvider } from '@/context/I18nContext';
 import { AuthProvider } from '@/context/AuthContext';
 import { MenuProvider } from '@/context/MenuContext';
 import { ThemeProvider } from '@/components/ui/theme-provider';
+import { PulseFab } from '@/components/pulse/PulseFab'; // Add PulseFab import
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -73,6 +74,7 @@ export default function RootLayout({
                   </main>
                 </div>
                 <Toaster />
+                <PulseFab /> {/* Add PulseFab component */}
               </MenuProvider>
             </AuthProvider>
           </Providers>
