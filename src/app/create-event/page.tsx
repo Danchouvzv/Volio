@@ -22,6 +22,7 @@ import { UserRole } from '@/types';
 import { ru } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Timestamp } from 'firebase/firestore';
 
 // Типы событий
 const eventCategories = [
@@ -138,8 +139,8 @@ export default function CreateEventPage() {
         category,
         isOnline,
         location,
-        startDate,
-        endDate,
+        startDate: Timestamp.fromDate(startDate),
+        endDate: Timestamp.fromDate(endDate),
         organizerId: user?.uid || '',
         organizerName: userProfile?.displayName || '',
         requiredBadges,

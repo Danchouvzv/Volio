@@ -16,10 +16,13 @@ export async function getChatMessages(chatId: string, messageLimit: number = 50)
 
     try {
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...(doc.data() as ChatMessage)
-        })).reverse(); // Reverse to show oldest first
+        return querySnapshot.docs.map(doc => {
+            const data = doc.data() as ChatMessage;
+            return {
+                ...data,
+                id: doc.id
+            };
+        }).reverse(); // Reverse to show oldest first
     } catch (e) {
         console.error(`Error fetching messages for chat ${chatId}:`, e);
         return [];
@@ -74,10 +77,13 @@ export async function getUserChats(userId: string): Promise<WithId<Chat>[]> {
     try {
         const querySnapshot = await getDocs(q);
         // TODO: Consider adding ordering by last message timestamp after fetching if index is not set up
-        return querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...(doc.data() as Chat)
-        }));
+        return querySnapshot.docs.map(doc => {
+            const data = doc.data() as Chat;
+            return {
+                ...data,
+                id: doc.id
+            };
+        });
     } catch (e) {
         console.error(`Error fetching chats for user ${userId}:`, e);
         return [];

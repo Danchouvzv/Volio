@@ -10,12 +10,15 @@ import { Button } from '@/components/ui/button';
 import { PlusCircle, ArrowRight } from 'lucide-react'; // Added ArrowRight
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useI18n } from '@/context/I18nContext';
 
 
 export default function HomePage() {
+  const { t } = useI18n();
+  
   return (
     <>
-      <a href="#main-content" className="skip-link">Skip to main content</a>
+      <a href="#main-content" className="skip-link">{t('common.skipToContent')}</a>
 
       <Hero />
 
@@ -38,7 +41,7 @@ export default function HomePage() {
                  viewport={{ once: true }}
                  className="text-3xl font-bold mb-4 text-foreground"
                >
-                 Ready to Make an Impact?
+                 {t('home.readyToStart')}
                </motion.h2>
                <motion.p
                   initial={{ opacity: 0, y: 20 }}
@@ -47,7 +50,7 @@ export default function HomePage() {
                   viewport={{ once: true }}
                  className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto"
                >
-                 Join the Volio community today and start your volunteering journey or organize your next event.
+                 {t('home.joinToday')}
                </motion.p>
                <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -62,7 +65,7 @@ export default function HomePage() {
                     asChild
                     className="bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.97] transition-transform duration-100" // Removed burst, adjusted active scale
                  >
-                   <Link href="/events">Find Events <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                   <Link href="/events">{t('home.exploreEvents')} <ArrowRight className="ml-2 h-4 w-4" /></Link>
                  </Button>
                  {/* Changed second CTA to 'Sign Up' */}
                  <Button
@@ -71,7 +74,7 @@ export default function HomePage() {
                     asChild
                     className="border-destructive text-destructive hover:bg-destructive/10 active:scale-[0.97] transition-transform duration-100" // Coral/Red color
                  >
-                   <Link href="/signup">Become an Organizer</Link>
+                   <Link href="/signup">{t('home.becomeOrganizer')}</Link>
                  </Button>
                </motion.div>
              </div>

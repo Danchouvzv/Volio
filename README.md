@@ -35,9 +35,9 @@
 
 ## 🖼️ Скриншоты
 
-| Главная (тёмная) | Профиль | Малые НКО |
+| Главная (тёмная) | Профиль | Мероприятия |
 |-------------|---------|------------|
-| ![home](docs/assets/screens/home-dark.png) | ![profile](docs/assets/screens/profile.png) | ![orgs](docs/assets/screens/small-orgs.png) |
+| ![home](docs/assets/screens/home-dark.png) | ![profile](docs/assets/screens/profile.png) | ![orgs](docs/assets/screens/events.png) |
 
 *(Больше в `docs/assets`)*
 

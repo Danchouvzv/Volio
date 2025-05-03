@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image'; // Import next/image
+import { useI18n } from '@/context/I18nContext';
 
 // Placeholder for potential canvas animation component
 const HeroCanvasAnimation = () => {
@@ -54,6 +55,8 @@ const HeroCanvasAnimation = () => {
 
 
 export function Hero() {
+  const { t } = useI18n();
+  
   // Animation variants for staggered effect
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -102,14 +105,14 @@ export function Hero() {
               className="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight text-foreground"
               style={{ fontFamily: "'Clash Display', sans-serif" }} // Apply Clash Display font
             >
-                Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-destructive">Volio</span> {/* Updated gradient */}
+                {t('home.welcome')} <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-destructive">Volio</span> {/* Updated gradient */}
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
               className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto"
             >
-              Discover volunteering opportunities, connect with like-minded people, and make a difference in your community.
+              {t('home.slogan')}
             </motion.p>
 
             <motion.div
@@ -123,7 +126,7 @@ export function Hero() {
                  className="bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.97] transition-transform duration-100" // Adjusted active scale
               >
                 <Link href="/events">
-                  Explore Events <ArrowRight className="ml-2 h-4 w-4" />
+                  {t('home.exploreEvents')} <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
                {/* Secondary CTA Button - Updated color and text per review */}
@@ -133,7 +136,7 @@ export function Hero() {
                  asChild
                  className="border-destructive text-destructive hover:bg-destructive/10 active:scale-[0.97] transition-transform duration-100" // Coral/Red outline
               >
-                <Link href="/signup">Become an Organizer</Link>
+                <Link href="/signup">{t('home.becomeOrganizer')}</Link>
               </Button>
             </motion.div>
         </motion.div>

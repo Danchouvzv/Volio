@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,16 +10,49 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { User, Bell, Lock, Globe, CreditCard, Code, Upload, Mail, Phone } from 'lucide-react';
+import { User, Bell, Lock, Globe, CreditCard, Code, Upload, Mail, Phone, Sun, Moon } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { useI18n } from '@/context/I18nContext';
 // TODO: Import necessary services (e.g., updateProfile, updateUserSettings)
 
 // Placeholder components for each settings section
 const ProfileSettings = ({ userProfile }: { userProfile: any }) => {
-    // TODO: Implement form handling (react-hook-form) and update logic
+    const { toast } = useToast();
+    const [formData, setFormData] = useState({
+        displayName: userProfile?.displayName || '',
+        pronouns: userProfile?.pronouns || '',
+        bio: userProfile?.bio || '',
+        phoneNumber: userProfile?.phoneNumber || ''
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [id]: value
+        }));
+    };
+
+    const handleSave = () => {
+        // Здесь в реальном приложении будет сохранение данных в Firebase
+        // Имитируем успешное сохранение
+        localStorage.setItem('userProfile', JSON.stringify({
+            ...userProfile,
+            ...formData
+        }));
+        
+        toast({
+            title: "Профиль обновлен",
+            description: "Ваши данные успешно сохранены.",
+            variant: "default"
+        });
+    };
+
     return (
         <Card>
             <CardHeader>
@@ -37,16 +71,16 @@ const ProfileSettings = ({ userProfile }: { userProfile: any }) => {
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <Label htmlFor="displayName">Display Name</Label>
-                        <Input id="displayName" defaultValue={userProfile?.displayName || ''} />
+                        <Input id="displayName" value={formData.displayName} onChange={handleChange} />
                     </div>
                     <div>
                         <Label htmlFor="pronouns">Pronouns (Optional)</Label>
-                        <Input id="pronouns" placeholder="e.g., she/her, they/them" defaultValue={userProfile?.pronouns || ''}/>
+                        <Input id="pronouns" placeholder="e.g., she/her, they/them" value={formData.pronouns} onChange={handleChange} />
                     </div>
                 </div>
                 <div>
                     <Label htmlFor="bio">Bio</Label>
-                    <Textarea id="bio" placeholder="Tell us a bit about yourself" defaultValue={userProfile?.bio || ''} className="min-h-[80px]"/>
+                    <Textarea id="bio" placeholder="Tell us a bit about yourself" value={formData.bio} onChange={handleChange} className="min-h-[80px]"/>
                 </div>
                 <div className="space-y-2">
                     <Label>Email</Label>
@@ -59,35 +93,63 @@ const ProfileSettings = ({ userProfile }: { userProfile: any }) => {
                  <div className="space-y-2">
                     <Label>Phone Number</Label>
                     <div className="flex items-center gap-2">
-                         <Input placeholder="+1 234 567 8900" defaultValue={userProfile?.phoneNumber || ''}/>
+                         <Input id="phoneNumber" placeholder="+1 234 567 8900" value={formData.phoneNumber} onChange={handleChange} />
                          <Button variant="outline" size="sm">Verify</Button>
                          {/* TODO: Add MFA toggle */}
                     </div>
                  </div>
                  {/* TODO: Add Password Change Section */}
-                 <Button>Save Profile</Button>
+                 <Button onClick={handleSave}>Save Profile</Button>
             </CardContent>
         </Card>
     );
 };
 
 const LocalizationSettings = () => {
-     // TODO: Implement state and update logic for language/timezone
-     const [language, setLanguage] = useState('en'); // Default or from user prefs
-     const [timezone, setTimezone] = useState('UTC'); // Default or from user prefs
+    const { toast } = useToast();
+    const { theme, setTheme } = useTheme();
+    const { locale, setLocale, t } = useI18n();
+    const [language, setLanguage] = useState(() => {
+        // Initialize from locale context
+        return locale;
+    });
+    const [timezone, setTimezone] = useState(() => {
+        // Check localStorage on initialization
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('timezone') || 'UTC';
+        }
+        return 'UTC';
+    });
+
+    // Update language state when locale changes
+    useEffect(() => {
+        setLanguage(locale);
+    }, [locale]);
+
+    // Handler for saving localization settings
+    const handleSaveLocalization = () => {
+        // Update context locale (which will update localStorage)
+        setLocale(language);
+        localStorage.setItem('timezone', timezone);
+        toast({
+            title: t('settings.localizationSaved'),
+            description: `${t('settings.language')}: ${language}, ${t('settings.timezone')}: ${timezone}`,
+            variant: "default"
+        });
+    };
 
     return (
          <Card>
             <CardHeader>
-                <CardTitle>Localization</CardTitle>
-                <CardDescription>Set your preferred language and time zone.</CardDescription>
+                <CardTitle>{t('settings.localization')}</CardTitle>
+                <CardDescription>{t('settings.localizationDescription')}</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
                 <div>
-                    <Label htmlFor="language">Interface Language</Label>
+                    <Label htmlFor="language">{t('settings.language')}</Label>
                      <Select value={language} onValueChange={setLanguage}>
                        <SelectTrigger id="language">
-                         <SelectValue placeholder="Select language" />
+                         <SelectValue placeholder={t('settings.selectLanguage')} />
                        </SelectTrigger>
                        <SelectContent>
                          <SelectItem value="en">English</SelectItem>
@@ -97,29 +159,117 @@ const LocalizationSettings = () => {
                      </Select>
                 </div>
                  <div>
-                     <Label htmlFor="timezone">Time Zone</Label>
+                     <Label htmlFor="timezone">{t('settings.timezone')}</Label>
                       <Select value={timezone} onValueChange={setTimezone}>
                         <SelectTrigger id="timezone">
-                          <SelectValue placeholder="Select time zone" />
+                          <SelectValue placeholder={t('settings.selectTimezone')} />
                         </SelectTrigger>
                         <SelectContent className="max-h-60">
-                           {/* TODO: Populate with actual time zones */}
                            <SelectItem value="UTC">UTC</SelectItem>
                            <SelectItem value="Europe/London">Europe/London</SelectItem>
                            <SelectItem value="America/New_York">America/New York</SelectItem>
                            <SelectItem value="Asia/Almaty">Asia/Almaty</SelectItem>
+                           <SelectItem value="Europe/Moscow">Europe/Moscow</SelectItem>
+                           <SelectItem value="Asia/Tokyo">Asia/Tokyo</SelectItem>
                         </SelectContent>
                       </Select>
                  </div>
-                  {/* TODO: Add Date Format Preference */}
-                 <Button>Save Localization</Button>
+
+                {/* Theme switcher */}
+                <div className="space-y-2 pt-4">
+                    <Label>{t('settings.theme')}</Label>
+                    <div className="theme-selector">
+                        <button 
+                            type="button"
+                            onClick={() => setTheme('light')}
+                            className={cn(
+                                "theme-option",
+                                theme === 'light' && "theme-option-active"
+                            )}
+                            aria-selected={theme === 'light'}
+                        >
+                            <Sun className="h-4 w-4" />
+                            <span>{t('settings.light')}</span>
+                        </button>
+                        <button 
+                            type="button"
+                            onClick={() => setTheme('dark')}
+                            className={cn(
+                                "theme-option",
+                                theme === 'dark' && "theme-option-active"
+                            )}
+                            aria-selected={theme === 'dark'}
+                        >
+                            <Moon className="h-4 w-4" />
+                            <span>{t('settings.dark')}</span>
+                        </button>
+                        <button 
+                            type="button"
+                            onClick={() => setTheme('system')}
+                            className={cn(
+                                "theme-option",
+                                theme === 'system' && "theme-option-active"
+                            )}
+                            aria-selected={theme === 'system'}
+                        >
+                            <Globe className="h-4 w-4" />
+                            <span>{t('settings.system')}</span>
+                        </button>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                        {t('settings.themeDescription')}
+                    </p>
+                </div>
+                  
+                <Button onClick={handleSaveLocalization} className="mt-4">{t('settings.saveLocalization')}</Button>
             </CardContent>
         </Card>
     );
 }
 
 const NotificationSettings = () => {
-    // TODO: Implement state and update logic
+    const { toast } = useToast();
+    const [pushSettings, setPushSettings] = useState(() => {
+        // Загружаем настройки из localStorage при инициализации
+        if (typeof window !== 'undefined') {
+            const savedSettings = localStorage.getItem('pushNotifications');
+            return savedSettings ? JSON.parse(savedSettings) : {
+                chat: true,
+                events: true,
+                friends: true
+            };
+        }
+        return {
+            chat: true,
+            events: true,
+            friends: true
+        };
+    });
+    
+    const [emailDigest, setEmailDigest] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('emailDigest') || 'weekly';
+        }
+        return 'weekly';
+    });
+
+    const handlePushToggle = (setting: string) => {
+        setPushSettings(prev => ({
+            ...prev,
+            [setting]: !prev[setting]
+        }));
+    };
+
+    const saveNotificationSettings = () => {
+        localStorage.setItem('pushNotifications', JSON.stringify(pushSettings));
+        localStorage.setItem('emailDigest', emailDigest);
+        toast({
+            title: "Настройки уведомлений сохранены",
+            description: "Ваши предпочтения по уведомлениям успешно обновлены.",
+            variant: "default"
+        });
+    };
+
     return (
         <Card>
             <CardHeader>
@@ -130,21 +280,33 @@ const NotificationSettings = () => {
                  <h4 className="font-medium text-sm">Push Notifications (Mobile/Web)</h4>
                  <div className="flex items-center justify-between rounded-lg border p-3">
                     <Label htmlFor="push-chat">New Chat Messages</Label>
-                    <Switch id="push-chat" />
+                    <Switch 
+                        id="push-chat" 
+                        checked={pushSettings.chat}
+                        onCheckedChange={() => handlePushToggle('chat')}
+                    />
                  </div>
                   <div className="flex items-center justify-between rounded-lg border p-3">
                      <Label htmlFor="push-events">Event Updates & Reminders</Label>
-                     <Switch id="push-events" />
+                     <Switch 
+                        id="push-events" 
+                        checked={pushSettings.events}
+                        onCheckedChange={() => handlePushToggle('events')}
+                     />
                   </div>
                   <div className="flex items-center justify-between rounded-lg border p-3">
                       <Label htmlFor="push-friends">Friend Requests</Label>
-                      <Switch id="push-friends" />
+                      <Switch 
+                        id="push-friends" 
+                        checked={pushSettings.friends}
+                        onCheckedChange={() => handlePushToggle('friends')}
+                      />
                   </div>
 
                   <h4 className="font-medium text-sm pt-4">Email Notifications</h4>
                   <div className="flex items-center justify-between rounded-lg border p-3">
                       <Label htmlFor="email-digest">Email Digest Schedule</Label>
-                       <Select defaultValue="weekly">
+                       <Select value={emailDigest} onValueChange={setEmailDigest}>
                          <SelectTrigger id="email-digest" className="w-[180px]">
                            <SelectValue placeholder="Select schedule" />
                          </SelectTrigger>
@@ -155,14 +317,38 @@ const NotificationSettings = () => {
                          </SelectContent>
                        </Select>
                   </div>
-                 <Button>Save Notifications</Button>
+                 <Button onClick={saveNotificationSettings}>Save Notifications</Button>
             </CardContent>
         </Card>
     );
 };
 
 const PrivacySettings = () => {
-    // TODO: Implement state and update logic
+    const { toast } = useToast();
+    const [profileVisibility, setProfileVisibility] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('profileVisibility') || 'public';
+        }
+        return 'public';
+    });
+    
+    const [hideActivity, setHideActivity] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('hideActivity') === 'true';
+        }
+        return false;
+    });
+
+    const savePrivacySettings = () => {
+        localStorage.setItem('profileVisibility', profileVisibility);
+        localStorage.setItem('hideActivity', hideActivity.toString());
+        toast({
+            title: "Настройки приватности обновлены",
+            description: "Ваши предпочтения конфиденциальности успешно сохранены.",
+            variant: "default"
+        });
+    };
+
     return (
         <Card>
             <CardHeader>
@@ -172,7 +358,7 @@ const PrivacySettings = () => {
             <CardContent className="space-y-4">
                 <div>
                     <Label htmlFor="profile-visibility">Profile Visibility</Label>
-                    <Select defaultValue="public">
+                    <Select value={profileVisibility} onValueChange={setProfileVisibility}>
                        <SelectTrigger id="profile-visibility">
                          <SelectValue placeholder="Select visibility" />
                        </SelectTrigger>
@@ -186,10 +372,14 @@ const PrivacySettings = () => {
                 </div>
                  <div className="flex items-center justify-between rounded-lg border p-3">
                      <Label htmlFor="hide-activity">Hide My Activity from Feed</Label>
-                     <Switch id="hide-activity" />
+                     <Switch 
+                        id="hide-activity" 
+                        checked={hideActivity}
+                        onCheckedChange={setHideActivity}
+                     />
                  </div>
                   {/* TODO: Add Blocked Users List */}
-                 <Button>Save Privacy Settings</Button>
+                 <Button onClick={savePrivacySettings}>Save Privacy Settings</Button>
             </CardContent>
         </Card>
     );
@@ -259,6 +449,20 @@ const DeveloperSettings = ({ userProfile }: { userProfile: any }) => {
 export default function SettingsPage() {
     const { user, userProfile, loading } = useAuth();
     const { toast } = useToast();
+
+    // Загрузка настроек пользователя из localStorage после первого рендера
+    useEffect(() => {
+        if (!loading && user) {
+            // Здесь можно загрузить сохраненные настройки из Firebase/API
+            // или использовать local storage, как сейчас для демонстрации
+            const savedProfile = localStorage.getItem('userProfile');
+            if (savedProfile) {
+                // В реальном приложении здесь будет обновление состояния через 
+                // соответствующие сервисы или context
+                console.log('Loaded saved profile:', JSON.parse(savedProfile));
+            }
+        }
+    }, [loading, user]);
 
     if (loading) {
         return (

@@ -6,6 +6,10 @@ import { Providers } from './providers'; // Centralized providers
 import { Sidebar } from '@/components/layout/sidebar'; // Import our new custom Sidebar
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster'; // Import Toaster
+import { I18nProvider } from '@/context/I18nContext';
+import { AuthProvider } from '@/context/AuthContext';
+import { MenuProvider } from '@/context/MenuContext';
+import { ThemeProvider } from '@/components/ui/theme-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -51,23 +55,28 @@ export default function RootLayout({
           geistSans.variable,
           geistMono.variable
         )}
-        style={{ backgroundColor: '#F4F1DE' }} // Set background color to match sidebar
       >
          {/* Skip Link - Positioned for screen readers but visually hidden until focused */}
          <a href="#main-content" className="skip-link">Skip to main content</a>
 
-        <Providers>
-          <div className="relative flex min-h-screen">
-            {/* Боковая навигация */}
-            <Sidebar />
-            
-            {/* Основное содержимое */}
-            <main id="main-content" className="flex-1 pl-[100px] md:pl-[100px] sm:pl-[60px]">
-              {children}
-            </main>
-          </div>
-          <Toaster />
-        </Providers>
+        <I18nProvider>
+          <Providers>
+            <AuthProvider>
+              <MenuProvider>
+                <div className="relative flex min-h-screen">
+                  {/* Боковая навигация */}
+                  <Sidebar />
+                  
+                  {/* Основное содержимое */}
+                  <main id="main-content" className="flex-1 pl-[100px] md:pl-[100px] sm:pl-[60px]">
+                    {children}
+                  </main>
+                </div>
+                <Toaster />
+              </MenuProvider>
+            </AuthProvider>
+          </Providers>
+        </I18nProvider>
       </body>
     </html>
   );

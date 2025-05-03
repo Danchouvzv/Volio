@@ -45,40 +45,40 @@
 
   .dark {
     /* Dark Theme based on Volio Brand */
-    --background: 210 7% 7%; /* #111315 Rich Black */
-    --foreground: 210 17% 95%; /* #EDEFF2 Near White */
-    --card: 210 8% 9%; /* #181A1D Dark Surface */
-    --card-foreground: 210 17% 95%; /* Near White */
-    --popover: 210 8% 9%; /* Dark Surface */
-    --popover-foreground: 210 17% 95%; /* Near White */
-    --primary: 157 100% 55%; /* #00B37E Emerald */
-    --primary-foreground: 0 0% 5%; /* Very Dark for contrast on green */
-    --secondary: 4 85% 60%; /* #FF6F61 Coral */
+    --background: 210 7% 8%; /* #13161A Richer Black for better contrast */
+    --foreground: 210 17% 98%; /* #F8FAFC Brighter white for better readability */
+    --card: 210 8% 11%; /* #1C2025 Slightly lighter card surface */
+    --card-foreground: 210 17% 98%; /* Match foreground */
+    --popover: 210 8% 11%; /* Match card */
+    --popover-foreground: 210 17% 98%; /* Match foreground */
+    --primary: 157 90% 55%; /* #00E396 Brighter Emerald */
+    --primary-foreground: 210 7% 8%; /* Dark for contrast on green */
+    --secondary: 4 85% 65%; /* #FF7B6E Brighter Coral */
     --secondary-foreground: 0 0% 100%; /* White */
-    --muted: 210 7% 15%; /* Darker Gray */
-    --muted-foreground: 210 10% 60%; /* #8C96A8 Muted Text */
-    --accent: 45 100% 60%; /* #FFD233 Lime/Yellow */
-    --accent-foreground: 210 7% 7%; /* Rich Black text */
-    --destructive: 4 85% 60%; /* #FF6F61 Coral */
+    --muted: 210 7% 16%; /* #21272F Slightly lighter muted background */
+    --muted-foreground: 210 10% 70%; /* #A7B0C0 Brighter muted text */
+    --accent: 45 100% 65%; /* #FFDC57 Brighter Yellow */
+    --accent-foreground: 210 7% 8%; /* Rich Black text */
+    --destructive: 4 90% 65%; /* #FF7B6E Brighter Coral */
     --destructive-foreground: 0 0% 100%; /* White */
-    --border: 210 7% 20%; /* Dark Border */
-    --input: 210 7% 20%;
-    --ring: 157 100% 55%; /* Emerald */
-    --chart-1: 4 85% 70%; /* Brighter Red */
-    --chart-2: 45 100% 65%; /* Brighter Yellow */
-    --chart-3: 280 85% 70%; /* Brighter Purple */
-    --chart-4: 157 100% 65%; /* Brighter Green */
-    --chart-5: 210 7% 30%; /* Mid Dark Gray */
+    --border: 210 7% 20%; /* #2A303A Slightly lighter border */
+    --input: 210 7% 20%; /* Match border */
+    --ring: 157 90% 55%; /* Match primary */
+    --chart-1: 4 90% 70%; /* Brighter Red */
+    --chart-2: 45 100% 70%; /* Brighter Yellow */
+    --chart-3: 280 85% 75%; /* Brighter Purple */
+    --chart-4: 157 90% 65%; /* Brighter Green */
+    --chart-5: 210 10% 35%; /* Slightly lighter gray */
 
     /* Sidebar colors (Dark Theme) */
-    --sidebar-background: 210 8% 9%; /* Dark Surface */
-    --sidebar-foreground: 210 17% 95%; /* Near White */
-    --sidebar-primary: 157 100% 55%; /* Emerald */
-    --sidebar-primary-foreground: 0 0% 5%; /* Very Dark */
-    --sidebar-accent: 210 7% 15%; /* Darker Gray */
-    --sidebar-accent-foreground: 157 100% 55%; /* Emerald */
-    --sidebar-border: 210 7% 20%; /* Dark Border */
-    --sidebar-ring: 157 100% 55%; /* Emerald */
+    --sidebar-background: 210 8% 11%; /* Match card */
+    --sidebar-foreground: 210 17% 98%; /* Match foreground */
+    --sidebar-primary: 157 90% 55%; /* Match primary */
+    --sidebar-primary-foreground: 210 7% 8%; /* Match primary-foreground */
+    --sidebar-accent: 210 7% 16%; /* Match muted */
+    --sidebar-accent-foreground: 157 90% 55%; /* Match primary */
+    --sidebar-border: 210 7% 20%; /* Match border */
+    --sidebar-ring: 157 90% 55%; /* Match primary */
   }
 }
 
@@ -101,28 +101,48 @@
   }
 
   /* Light theme contrast adjustments */
-   .light .text-primary { @apply text-[hsl(var(--primary))]; }
-   .light .bg-primary { @apply text-primary-foreground; }
-   .light .bg-destructive { @apply text-destructive-foreground; }
-   .light .bg-accent { @apply text-accent-foreground; }
-   .light .text-destructive { @apply text-[hsl(var(--destructive))]; }
+   .light .text-primary { 
+     color: hsl(var(--primary));
+   }
+   .light .bg-primary { 
+     color: hsl(var(--primary-foreground));
+   }
+   .light .bg-destructive { 
+     color: hsl(var(--destructive-foreground));
+   }
+   .light .bg-accent { 
+     color: hsl(var(--accent-foreground));
+   }
+   .light .text-destructive { 
+     color: hsl(var(--destructive));
+   }
    /* Ensure button text is white on coral */
    .light .hover\:bg-destructive:hover {
-       @apply text-destructive-foreground;
+     color: hsl(var(--destructive-foreground));
    }
    .light .hover\:bg-secondary:hover {
-       @apply text-secondary-foreground;
+     color: hsl(var(--secondary-foreground));
    }
 
 
   /* Dark theme contrast adjustments */
-   .dark .text-primary { @apply text-[hsl(var(--primary))]; }
-   .dark .bg-primary { @apply text-primary-foreground; }
-   .dark .bg-destructive { @apply text-destructive-foreground; }
-   .dark .bg-accent { @apply text-accent-foreground; }
-   .dark .text-destructive { @apply text-[hsl(var(--destructive))]; }
-    .dark .hover\:bg-secondary:hover {
-       @apply text-secondary-foreground;
+   .dark .text-primary { 
+     color: hsl(var(--primary));
+   }
+   .dark .bg-primary { 
+     color: hsl(var(--primary-foreground));
+   }
+   .dark .bg-destructive { 
+     color: hsl(var(--destructive-foreground));
+   }
+   .dark .bg-accent { 
+     color: hsl(var(--accent-foreground));
+   }
+   .dark .text-destructive { 
+     color: hsl(var(--destructive));
+   }
+   .dark .hover\:bg-secondary:hover {
+     color: hsl(var(--secondary-foreground));
    }
 
 }
@@ -189,7 +209,17 @@
 
     /* Active nav link style */
     .nav-link-active {
-        @apply relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-gradient-to-r after:from-primary after:to-destructive; /* Use Destructive color from review */
+        position: relative;
+    }
+    
+    .nav-link-active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--destructive)));
     }
 
   /* Sidebar styles */
@@ -266,6 +296,84 @@
     --volio-primary: #E76F51;
     --volio-notification: #FFD166;
     --volio-hover: #A8DADC;
+  }
+
+  /* Dark theme custom variables */
+  .dark {
+    --volio-background: #13161A; /* Match updated dark background */
+    --volio-text: #F8FAFC; /* Match updated dark foreground */
+    --volio-secondary: #00E396; /* Match updated primary */
+    --volio-primary: #FF7B6E; /* Match updated secondary/destructive */
+    --volio-notification: #FFDC57; /* Match updated accent */
+    --volio-hover: #21272F; /* Match updated muted */
+  }
+
+  /* Theme selector styles */
+  .theme-selector {
+    @apply flex items-center gap-2 rounded-lg p-1 bg-muted/30;
+  }
+
+  .theme-option {
+    @apply relative rounded-md px-3 py-2 transition-all duration-200 flex items-center gap-2 text-sm font-medium;
+  }
+  
+  .theme-option-active {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Light theme specific button styles */
+  .light .theme-option {
+    /* Remove nesting and use standard selector */
+  }
+  .light .theme-option:hover {
+    background-color: hsla(var(--accent) / 0.3);
+  }
+  
+  /* Dark theme specific button styles */
+  .dark .theme-option {
+    /* Remove nesting and use standard selector */
+  }
+  .dark .theme-option:hover {
+    background-color: hsla(var(--muted) / 0.7);
+  }
+  
+  /* Tab styling improvements */
+  .dark .settings-tab {
+    background-color: transparent;
+    color: hsl(var(--foreground));
+    border-color: hsla(var(--muted-foreground) / 0.3);
+    transition-property: color, background-color, border-color;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+  }
+  
+  .dark .settings-tab:hover {
+    background-color: hsl(var(--muted));
+  }
+  
+  .dark .settings-tab[data-state="active"] {
+    border-left-color: hsl(var(--primary));
+    background-color: hsl(var(--muted));
+    color: hsl(var(--primary));
+    font-weight: 500;
+  }
+  
+  .light .settings-tab {
+    background-color: transparent;
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--muted));
+  }
+  
+  .light .settings-tab:hover {
+    background-color: hsla(var(--muted) / 0.5);
+  }
+  
+  .light .settings-tab[data-state="active"] {
+    border-left-color: hsl(var(--primary));
+    background-color: hsla(var(--muted) / 0.3);
+    color: hsl(var(--primary));
   }
 }
 

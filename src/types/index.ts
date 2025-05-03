@@ -21,6 +21,11 @@ export interface UserProfile {
   topBadges?: string[]; // Array of Badge IDs
   createdAt: Timestamp;
   onboardingComplete?: boolean; // Flag for onboarding status
+  location?: {
+    lat: number;
+    lng: number;
+    address?: string;
+  }; // User location
   // Add other profile fields as needed
 }
 

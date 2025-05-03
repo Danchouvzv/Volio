@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
+import { useT } from '@/context/I18nContext';
 
 // Import icons
 import { 
@@ -20,22 +21,18 @@ import {
 
 // Define the type for sidebar items
 type SidebarItem = {
-  key: string;
+  href: string;
   icon: React.ReactNode;
   label: string;
-  path: string;
   notifications?: number;
 };
 
 type SidebarProps = {
-  items?: SidebarItem[];
-  activeKey?: string;
+  className?: string;
 };
 
-export function Sidebar({ 
-  items = defaultItems,
-  activeKey 
-}: SidebarProps) {
+export function Sidebar({ className }: SidebarProps) {
+  const t = useT();
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -67,6 +64,15 @@ export function Sidebar({
   const toggleSidebar = () => {
     setExpanded(!expanded);
   };
+
+  const navItems = [
+    { href: '/', icon: <Home />, label: t('nav.home') },
+    { href: '/events', icon: <CalendarDays />, label: t('nav.events') },
+    { href: '/recommendations', icon: <Sparkles />, label: t('nav.smartMatch') },
+    { href: '/profile', icon: <User />, label: t('nav.profile') },
+    { href: '/chat', icon: <MessageSquare />, label: t('nav.chat') },
+    { href: '/settings', icon: <Settings />, label: t('nav.settings') }
+  ];
 
   return (
     <div
@@ -102,13 +108,13 @@ export function Sidebar({
 
         {/* Navigation Items */}
         <div className="flex-1 flex flex-col items-center py-4 space-y-6">
-          {items.map((item) => {
-            const isActive = pathname === item.path;
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
             
             return (
               <Link 
-                key={item.key} 
-                href={item.path}
+                key={item.href} 
+                href={item.href}
                 className={cn(
                   "relative flex flex-col items-center justify-center w-full px-2 py-3 group",
                   "transition-all duration-200 ease-out",
@@ -199,7 +205,7 @@ export function Sidebar({
                   transition: 'color 0.2s ease-out'
                 }}
               >
-                Logout
+                {t('auth.logout')}
               </span>
             )}
           </button>
@@ -216,14 +222,4 @@ export function Sidebar({
       </div>
     </div>
   );
-}
-
-// Default sidebar items
-const defaultItems: SidebarItem[] = [
-  { key: 'home', icon: <Home />, label: 'Home', path: '/' },
-  { key: 'events', icon: <CalendarDays />, label: 'Events', path: '/events' },
-  { key: 'smartMatch', icon: <Sparkles />, label: 'Smart Match', path: '/recommendations' },
-  { key: 'profile', icon: <User />, label: 'Profile', path: '/profile' },
-  { key: 'chat', icon: <MessageSquare />, label: 'Chat', path: '/chat', notifications: 3 },
-  { key: 'settings', icon: <Settings />, label: 'Settings', path: '/settings' },
-]; 
+} 

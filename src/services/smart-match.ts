@@ -38,7 +38,7 @@ export async function calculateMatchScore(
   // 2. Skills Match: Compare user skills to event requirements
   if (user.interests && event.category) {
     // For demo purposes, treat interests as skills too
-    const userSkills = user.interests || [];
+    const userSkills: string[] = user.interests || [];
     const eventSkills = [event.category]; // Simplification: use category as main skill
     
     // Count matching skills
@@ -67,7 +67,8 @@ export async function calculateMatchScore(
   
   // 5. Interests Match: Compare user interests to event category
   if (user.interests && event.category) {
-    matchFactors.interestsMatch = user.interests.includes(event.category) ? 1 : 0;
+    const userInterests: string[] = user.interests || [];
+    matchFactors.interestsMatch = userInterests.includes(event.category) ? 1 : 0;
   }
   
   // Calculate weighted total score
@@ -386,13 +387,13 @@ export function generateMockCandidates(count: number = 10): SmartMatchCandidate[
     );
     
     // Random selection of skills and interests
-    const userSkills = [];
+    const userSkills: string[] = [];
     for (let j = 0; j < Math.floor(Math.random() * 3) + 1; j++) {
       const skill = skills[Math.floor(Math.random() * skills.length)];
       if (!userSkills.includes(skill)) userSkills.push(skill);
     }
     
-    const userInterests = [];
+    const userInterests: string[] = [];
     for (let j = 0; j < Math.floor(Math.random() * 3) + 1; j++) {
       const interest = interests[Math.floor(Math.random() * interests.length)];
       if (!userInterests.includes(interest)) userInterests.push(interest);

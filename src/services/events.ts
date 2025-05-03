@@ -25,7 +25,7 @@ export async function getEvents(filters?: {
   upcoming?: boolean;
 }): Promise<WithId<Event>[]> {
   try {
-    let q = collection(db, 'events');
+    const eventsCollection = collection(db, 'events');
     
     // Apply filters
     const constraints = [];
@@ -46,15 +46,19 @@ export async function getEvents(filters?: {
     // Apply ordering by start date (newest first)
     constraints.push(orderBy('startDate', 'desc'));
     
-    if (constraints.length > 0) {
-      q = query(q, ...constraints);
-    }
+    // Create the query with the constraints
+    const q = constraints.length > 0 
+      ? query(eventsCollection, ...constraints) 
+      : query(eventsCollection);
     
     const snapshot = await getDocs(q);
     
     return snapshot.docs.map(doc => {
       const data = doc.data() as Event;
-      return { id: doc.id, ...data };
+      return { 
+        ...data,
+        id: doc.id 
+      };
     });
   } catch (error) {
     console.error('Error fetching events:', error);
@@ -69,7 +73,11 @@ export async function getEventById(id: string): Promise<WithId<Event> | null> {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return { id: docSnap.id, ...(docSnap.data() as Event) };
+    const data = docSnap.data() as Event;
+    return { 
+      ...data,
+      id: docSnap.id
+    };
   } else {
     console.log('No such event document!');
     return null;
@@ -202,14 +210,20 @@ export async function getUserEvents(userId: string): Promise<WithId<Event>[]> {
     // Add organizer events
     organizerSnapshot.docs.forEach(doc => {
       const data = doc.data() as Event;
-      eventsMap.set(doc.id, { id: doc.id, ...data });
+      eventsMap.set(doc.id, { 
+        ...data,
+        id: doc.id 
+      });
     });
     
     // Add participant events (if not already added as organizer)
     participantSnapshot.docs.forEach(doc => {
       if (!eventsMap.has(doc.id)) {
         const data = doc.data() as Event;
-        eventsMap.set(doc.id, { id: doc.id, ...data });
+        eventsMap.set(doc.id, { 
+          ...data,
+          id: doc.id 
+        });
       }
     });
     

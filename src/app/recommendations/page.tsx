@@ -45,8 +45,10 @@ import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Separator } from '@/components/ui/separator';
+import { useI18n } from '@/context/I18nContext';
 
 export default function RecommendationsPage() {
+  const { t } = useI18n();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
   const [sortBy, setSortBy] = useState('match');
@@ -124,20 +126,20 @@ export default function RecommendationsPage() {
           <div>
             <h1 className="text-3xl font-bold flex items-center">
               <Sparkles className="h-6 w-6 mr-2 text-primary" />
-              Smart Match
+              {t('smartMatch.title')}
             </h1>
             <p className="text-muted-foreground mt-1">
-              Discover events that match your skills and preferences
+              {t('smartMatch.subtitle')}
             </p>
           </div>
           
           <div className="flex items-center gap-3">
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by" />
+                <SelectValue placeholder={t('smartMatch.bestMatch')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="match">Best Match</SelectItem>
+                <SelectItem value="match">{t('smartMatch.bestMatch')}</SelectItem>
                 <SelectItem value="date">Earliest Date</SelectItem>
               </SelectContent>
             </Select>
@@ -146,12 +148,12 @@ export default function RecommendationsPage() {
               <SheetTrigger asChild>
                 <Button variant="outline" className="gap-2">
                   <SlidersHorizontal className="h-4 w-4" />
-                  Filters
+                  {t('smartMatch.filters')}
                 </Button>
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
-                  <SheetTitle>Filter Events</SheetTitle>
+                  <SheetTitle>{t('smartMatch.filters')}</SheetTitle>
                   <SheetDescription>
                     Customize your event recommendations
                   </SheetDescription>
@@ -199,7 +201,7 @@ export default function RecommendationsPage() {
                 
                 <SheetFooter>
                   <SheetClose asChild>
-                    <Button onClick={() => refetch()}>Apply Filters</Button>
+                    <Button onClick={() => refetch()}>{t('events.applyFilters')}</Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>
@@ -212,7 +214,7 @@ export default function RecommendationsPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input 
-                placeholder="Search events..." 
+                placeholder={t('smartMatch.searchPlaceholder')} 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9"
@@ -235,7 +237,7 @@ export default function RecommendationsPage() {
                 size="sm"
                 onClick={() => setActiveFilter('all')}
               >
-                All
+                {t('smartMatch.all')}
               </Button>
               
               {categories.map((category) => (

@@ -15,6 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getEvents } from '@/services/events'; // Assume this service exists
 import type { Event } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useI18n } from '@/context/I18nContext';
 
 // Placeholder for map bounds logic
 const getMapBoundsFromEvents = (events: Event[]): google.maps.LatLngBounds | undefined => {
@@ -30,6 +31,7 @@ const getMapBoundsFromEvents = (events: Event[]): google.maps.LatLngBounds | und
 
 
 export default function EventsPage() {
+  const { t } = useI18n();
   const [filters, setFilters] = useState({
     category: 'all',
     location: '', // Will likely become more complex (bounds)
@@ -84,7 +86,7 @@ export default function EventsPage() {
         animate={{ opacity: 1, y: 0 }}
         className="text-3xl font-bold mb-8"
       >
-        Discover Events
+        {t('events.discover')}
       </motion.h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -94,16 +96,16 @@ export default function EventsPage() {
             animate={{ opacity: 1, x: 0 }}
             className="md:col-span-1 space-y-6 p-4 border rounded-lg shadow-sm bg-card"
         >
-          <h2 className="text-xl font-semibold flex items-center"><Filter className="mr-2 h-5 w-5"/> Filters</h2>
+          <h2 className="text-xl font-semibold flex items-center"><Filter className="mr-2 h-5 w-5"/> {t('events.filters')}</h2>
           {/* Category Filter */}
            <div>
-             <Label htmlFor="category">Category</Label>
+             <Label htmlFor="category">{t('events.category')}</Label>
              <Select value={filters.category} onValueChange={(value) => handleFilterChange('category', value)}>
                <SelectTrigger id="category">
-                 <SelectValue placeholder="Select category" />
+                 <SelectValue placeholder={t('events.allCategories')} />
                </SelectTrigger>
                <SelectContent>
-                 <SelectItem value="all">All Categories</SelectItem>
+                 <SelectItem value="all">{t('events.allCategories')}</SelectItem>
                  <SelectItem value="environment">Environment</SelectItem>
                  <SelectItem value="social">Social</SelectItem>
                  <SelectItem value="animals">Animals</SelectItem>
@@ -115,21 +117,21 @@ export default function EventsPage() {
 
           {/* Location Filter (Simple Text for now) */}
           <div>
-            <Label htmlFor="location">Location</Label>
+            <Label htmlFor="location">{t('events.location')}</Label>
             <Input
               id="location"
-              placeholder="Search by city or address"
+              placeholder={t('events.searchLocation')}
               value={filters.location}
               onChange={(e) => handleFilterChange('location', e.target.value)}
             />
-             <p className="text-xs text-muted-foreground mt-1">Map area filter applied automatically.</p>
+             <p className="text-xs text-muted-foreground mt-1">{t('events.mapArea')}</p>
           </div>
 
            {/* Date Filter Placeholder */}
            <div>
-               <Label htmlFor="date">Date</Label>
+               <Label htmlFor="date">{t('events.date')}</Label>
                {/* Replace with actual Date Picker component */}
-               <Input id="date" type="date" onChange={(e) => handleFilterChange('date', e.target.value)} />
+               <Input id="date" type="date" placeholder={t('events.datePlaceholder')} onChange={(e) => handleFilterChange('date', e.target.value)} />
            </div>
 
 
@@ -137,20 +139,20 @@ export default function EventsPage() {
           <div className="space-y-2">
              <div className="flex items-center space-x-2">
                 <Checkbox id="online" checked={filters.isOnline} onCheckedChange={(checked) => handleFilterChange('isOnline', checked)} />
-                <Label htmlFor="online">Online Events</Label>
+                <Label htmlFor="online">{t('events.online')}</Label>
              </div>
               <div className="flex items-center space-x-2">
                  <Checkbox id="league" checked={filters.isLeague} onCheckedChange={(checked) => handleFilterChange('isLeague', checked)} />
-                 <Label htmlFor="league">League/Official Events</Label>
+                 <Label htmlFor="league">{t('events.official')}</Label>
               </div>
                <div className="flex items-center space-x-2">
                   <Checkbox id="unofficial" checked={filters.isUnofficial} onCheckedChange={(checked) => handleFilterChange('isUnofficial', checked)} />
-                  <Label htmlFor="unofficial">Unofficial Events</Label>
+                  <Label htmlFor="unofficial">{t('events.unofficial')}</Label>
                </div>
            </div>
 
           <Button className="w-full" onClick={() => console.log('Applying filters:', filters)}>
-            Apply Filters
+            {t('events.applyFilters')}
           </Button>
         </motion.div>
 
@@ -171,6 +173,15 @@ export default function EventsPage() {
                 disableDefaultUI={true}
                 // Fit bounds if they exist
                 bounds={bounds}
+                onError={() => (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="text-center">
+                      <p>{t('events.mapError')}</p>
+                      <p>{t('events.mapErrorOwner')}</p>
+                      <Button>{t('events.ok')}</Button>
+                    </div>
+                  </div>
+                )}
               >
                 <AnimatePresence>
                   {events.map((event) => event.location && (
@@ -208,7 +219,7 @@ export default function EventsPage() {
               )}
               {error && <p className="text-destructive">Error loading events: {error.message}</p>}
                {!isLoading && !error && events.length === 0 && (
-                  <p className="text-center text-muted-foreground py-8">No events found matching your criteria.</p>
+                  <p className="text-center text-muted-foreground py-8">{t('events.noEventsFound')}</p>
                )}
               <AnimatePresence>
                 {!isLoading && events.map((event) => (
@@ -223,7 +234,7 @@ export default function EventsPage() {
                       <CardHeader>
                         <CardTitle>{event.title}</CardTitle>
                         <CardDescription>
-                          {event.isOnline ? 'Online Event' : event.location?.address || 'Location TBD'}
+                          {event.isOnline ? t('events.online') : event.location?.address || 'Location TBD'}
                            {' - '} {new Date(event.startDate.seconds * 1000).toLocaleDateString()}
                         </CardDescription>
                       </CardHeader>

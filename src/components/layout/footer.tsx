@@ -1,7 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
+import { useT } from '@/context/I18nContext';
 
 export function Footer() {
+  const t = useT();
+  const currentYear = new Date().getFullYear();
+  
   return (
     <footer className="border-t bg-background">
       <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
@@ -11,14 +15,14 @@ export function Footer() {
             Volio {/* Updated Name */}
           </span>
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            Built for the modern volunteer. © {new Date().getFullYear()}
+            {t('footer.copyright')} {currentYear}
           </p>
         </div>
         <div className="flex space-x-4 text-sm text-muted-foreground">
-          <Link href="/about" className="hover:text-primary">About</Link>
-          <Link href="/privacy" className="hover:text-primary">Privacy</Link>
-          <Link href="/terms" className="hover:text-primary">Terms</Link>
-          <Link href="/settings" className="hover:text-primary">Settings</Link> {/* Added Settings Link */}
+          <Link href="/about" className="hover:text-primary">{t('footer.about')}</Link>
+          <Link href="/privacy" className="hover:text-primary">{t('footer.privacy')}</Link>
+          <Link href="/terms" className="hover:text-primary">{t('footer.terms')}</Link>
+          <Link href="/settings" className="hover:text-primary">{t('nav.settings')}</Link>
         </div>
       </div>
     </footer>

@@ -81,7 +81,13 @@ export async function getPendingFriendRequests(userId: string): Promise<WithId<F
         orderBy('createdAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as FriendRequest) }));
+    return querySnapshot.docs.map(doc => {
+        const data = doc.data() as FriendRequest;
+        return { 
+            ...data, 
+            id: doc.id 
+        };
+    });
 }
 
 // Accept a friend request
@@ -178,7 +184,11 @@ export async function getFriends(userId: string): Promise<UserProfile[]> {
              const q = query(usersCollection, where('__name__', 'in', chunk)); // __name__ refers to document ID (UID)
              const querySnapshot = await getDocs(q);
              querySnapshot.forEach(doc => {
-                 friendProfiles.push({ uid: doc.id, ...(doc.data() as Omit<UserProfile, 'uid'>) });
+                 const data = doc.data() as Omit<UserProfile, 'uid'>;
+                 friendProfiles.push({ 
+                     ...data, 
+                     uid: doc.id 
+                 });
              });
         }
     }
@@ -238,7 +248,11 @@ export async function getFriendSuggestions(userId: string, count: number = 5): P
          const suggestions: UserProfile[] = [];
          querySnapshot.forEach(doc => {
              if (!excludedIds.includes(doc.id) && suggestions.length < count) {
-                 suggestions.push({ uid: doc.id, ...(doc.data() as Omit<UserProfile, 'uid'>) });
+                 const data = doc.data() as Omit<UserProfile, 'uid'>;
+                 suggestions.push({ 
+                     ...data, 
+                     uid: doc.id 
+                 });
              }
          });
          return suggestions;
