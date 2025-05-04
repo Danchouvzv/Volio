@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
-import type { UserRole, type UserProfile } from '@/types';
+import type { UserRole, UserProfile } from '@/types';
 import {
   Home,
   CalendarDays,
